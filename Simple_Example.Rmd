@@ -134,6 +134,10 @@ a wider population of students}.
 
 # Comparing the Underlying Means of More Than Two Groups
 
+```{r}
+knitr::knit_exit()
+```
+
 ## Comparing the Underlying Means of More Than Two Groups: Some Data
 
 Consider these data on the number of hours worked in a week by randomly selected accountants, GPs, lecturers and plumbers:
