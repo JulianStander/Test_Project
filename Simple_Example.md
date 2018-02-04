@@ -3,6 +3,11 @@ Simple Example
 Julian Stander
 04/02/2018
 
+-   [Comparing the Underlying Means of Two Groups](#fred)
+    -   [Comparing the Underlying Means of Two Groups Hello!](#comparing-the-underlying-means-of-two-groups-hello)
+    -   [Comparing the Underlying Means of Two Groups, continued](#comparing-the-underlying-means-of-two-groups-continued)
+    -   [*t*-test: Underlying Difference in Mean](#t-test-underlying-difference-in-mean)
+
 Comparing the Underlying Means of Two Groups
 ============================================
 
@@ -43,4 +48,4 @@ t.test(Height ~ Sex, data = qd, var.equal = TRUE)
     # mean in group Female   mean in group Male 
     #             165.1429             179.0000
 
-[This is a continuation of section](#hello).
+[Comparing the Underlying Means of Two Groups](#fred). Also, [link text](#fred).

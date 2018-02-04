@@ -2,7 +2,10 @@
 title: "Simple Example"
 author: "Julian Stander"
 date: "04/02/2018"
-output: github_document
+output:
+  github_document:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include = FALSE}
@@ -14,7 +17,7 @@ options(width = 60)
 ```
 
 
-# Comparing the Underlying Means of Two Groups {#hello}
+# Comparing the Underlying Means of Two Groups {#fred}
 
 ## Comparing the Underlying Means of Two Groups Hello! 
 
@@ -37,7 +40,7 @@ ggplot(qd, aes(x = Sex, y = Height, fill = Sex)) +
 ```
 
 
-## Comparing the Underlying Means of Two Groups, continued
+## Comparing the Underlying Means of Two Groups, continued 
 
 
 
@@ -61,4 +64,4 @@ To answer this question, we can use a $t$-test:
 t.test(Height ~ Sex, data = qd, var.equal = TRUE)
 ```
 
-[This is a continuation of section](#hello).
+[Comparing the Underlying Means of Two Groups].  Also, [link text](#fred).
