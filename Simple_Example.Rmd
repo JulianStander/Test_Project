@@ -14,9 +14,9 @@ options(width = 60)
 ```
 
 
-# Comparing the Underlying Means of Two Groups
+# Comparing the Underlying Means of Two Groups {#hello}
 
-## Comparing the Underlying Means of Two Groups Hello! {#hello}
+## Comparing the Underlying Means of Two Groups Hello! 
 
 ```{r, echo = FALSE}
 setwd("/Users/julianstander/Dropbox/MATH500/Practicals/Practical_9_t_test_ANOVA")
@@ -39,7 +39,7 @@ ggplot(qd, aes(x = Sex, y = Height, fill = Sex)) +
 
 ## Comparing the Underlying Means of Two Groups, continued
 
-This is a continuation of section \secref{hello}.
+
 
 We can ask: 
 
@@ -61,3 +61,4 @@ To answer this question, we can use a $t$-test:
 t.test(Height ~ Sex, data = qd, var.equal = TRUE)
 ```
 
+[This is a continuation of section](#hello).

@@ -14,8 +14,6 @@ Comparing the Underlying Means of Two Groups Hello!
 Comparing the Underlying Means of Two Groups, continued
 -------------------------------------------------------
 
-This is a continuation of section .
-
 We can ask:
 
 -   Is there an height between females and males?
@@ -44,3 +42,5 @@ t.test(Height ~ Sex, data = qd, var.equal = TRUE)
     # sample estimates:
     # mean in group Female   mean in group Male 
     #             165.1429             179.0000
+
+[This is a continuation of section](#hello).
