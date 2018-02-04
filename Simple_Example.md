@@ -6,13 +6,15 @@ Julian Stander
 Comparing the Underlying Means of Two Groups
 ============================================
 
-Comparing the Underlying Means of Two Groups
---------------------------------------------
+Comparing the Underlying Means of Two Groups Hello!
+---------------------------------------------------
 
 ![](Simple_Example_files/figure-markdown_github/unnamed-chunk-1-1.png)
 
 Comparing the Underlying Means of Two Groups, continued
 -------------------------------------------------------
+
+This is a continuation of section .
 
 We can ask:
 
