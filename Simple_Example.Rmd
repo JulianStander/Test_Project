@@ -5,26 +5,261 @@ date: "04/02/2018"
 output: github_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(comment = "#", message = FALSE, warning = FALSE) 
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
+```{r set-options, echo = FALSE, cache = FALSE}
+options(width = 60)
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
+# Comparing the Underlying Means of Two Groups
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+## Comparing the Underlying Means of Two Groups
+
+```{r, echo = FALSE}
+setwd("/Users/julianstander/Dropbox/MATH500/Practicals/Practical_9_t_test_ANOVA")
+#
+library(readr)
+#
+qd <- read_csv("MATH500_Questionnaire_Data.csv")
+#
+library(ggplot2)
+#
+ggplot(qd, aes(x = Sex, y = Height, fill = Sex)) + 
+    geom_boxplot(varwidth = TRUE) +
+    labs(x = "Gender", y = "Height (cms)") +
+  theme(axis.title = element_text(size = 20, color = "black"), # Customize the titles of both axes 
+        axis.text = element_text(size = 18, color = "black"), # Customize the text of both axes
+        legend.title = element_text(size = 20, color = "black"),
+        legend.text = element_text(size = 18, color = "black")) # Customize the facet text
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## Comparing the Underlying Means of Two Groups, continued
+
+We can ask: 
+
+- Is there an \textcolor{red}{underlying difference in mean} height between females and males?
+
+This is a __profound question__.  We are not asking whether there is a difference
+between the mean height of females and the mean height of males in the
+data collected. 
+
+We are asking, _more generally_, whether there is
+a difference between the mean height of females and the mean height of males in
+a much bigger _population_.
+
+
+## $t$-test: Underlying Difference in Mean
+
+To answer this question, we can use a $t$-test:
+```{r}
+t.test(Height ~ Sex, data = qd, var.equal = TRUE)
+```
+
+## $p$-value: Underlying Difference in Mean
+
+We need to focus on the $p$-value
+
+```{r, echo = FALSE}
+p_value <- t.test(Height ~ Sex, data = qd, var.equal = TRUE)$p.value
+p_value
+```
+
+In general, if the $p$-value is less that $0.05$, 
+\textit{there is an underlying difference in mean height between females and males}.
+
+In this case, the $p$-value is considerably less than $0.05$. Therefore, we conclude that 
+
+- \textbf{the data supply evidence that there is an underlying difference in mean height between females and males}.
+
+## Obtaining the $p$-value using the \texttt{lm} Function
+
+We can obtain the above $p$-value `r format(p_value, scientific = FALSE)` in a different way 
+
+- using the \texttt{lm} function for \texttt{l}inear \texttt{m}odelling:
+
+```{r, results = 'hide'}
+m <- lm(Height ~ Sex, data = qd)
+summary(m)
+```
+
+```{r, echo = FALSE}
+summary(m)$coefficients
+```
+
+## Comparing the Underlying Means of Two Groups
+
+We can also ask: 
+
+- Is the mean height of females \textcolor{red}{less than} the mean height of males \textcolor{red}{in a wider population} of students?
+
+Again, we are not asking whether the mean height of females is less than the mean height of males in the
+data collected.  
+
+We are asking, _more generally_, whether the mean height of females is less than the mean height of males in
+a much bigger _population_.
+
+
+
+## $t$-test: Is the Mean Height of Females Less Than the Mean Height of Males in the Population?
+
+To answer this question, we can use a $t$-test, with 
+
+\texttt{alternative = ``less''}:
+
+\footnotesize
+```{r}
+t.test(Height ~ Sex, data = qd, var.equal = TRUE, 
+       alternative = "less")
+```
+
+## $p$-value: Is the Mean Height of Females Less Than the Mean Height of Males in the Population?
+
+We need to focus on the $p$-value
+
+```{r, echo = FALSE}
+t.test(Height ~ Sex, data = qd, var.equal = TRUE,
+       alternative = "less")$p.value
+```
+
+If the $p$-value is less that $0.05$, we conclude that 
+
+- \textbf{the mean height of females is less than the mean height of males in 
+a wider population of students}.
+
+- What do you conclude?
+
+# Comparing the Underlying Means of More Than Two Groups
+
+## Comparing the Underlying Means of More Than Two Groups: Some Data
+
+Consider these data on the number of hours worked in a week by randomly selected accountants, GPs, lecturers and plumbers:
+
+\begin{tabular}{l|ccccccccccc}\hline\hline
+Accountants & 45& 38& 40& 42& 48& 37& 44& 40& 39& 42& 41\\
+  & 40 & 36& 40& 48 & & & & & & & \\ \hline
+GPs & 60& 57& 44& 52 & 57& 45& 42& 56& 53& 42 & 44\\
+ &  54& 51& 58 & & & & & & & &\\ \hline
+Lecturers & 52& 45& 40& 48& 36& 50& 56& 42& 37& 43& 47\\ \hline
+Plumbers & 44& 39& 50& 37& 45& 39& 52& 45& 39& 48& 44\\
+ & 43& 53 & & & & & & & & &\\ \hline \hline
+\end{tabular}
+
+## Comparing the Underlying Means of More Than Two Groups: Some Data, continued
+
+A good way of storing these data in \R\ is to use a data frame with  one variable for the hours worked 
+and another for the corresponding
+employment group (accountants, GPs, lecturers or plumbers)
+
+```{r, echo = FALSE}
+accountants <- c(45, 38, 40, 42, 48, 37, 44, 40, 39, 42, 41, 40, 36, 40, 48) 
+gps <- c(60, 57, 44, 52, 57, 45, 42, 56, 53, 42, 44, 54, 51, 58)
+lecturers <- c(52, 45, 40, 48, 36, 50, 56, 42, 37, 43, 47) 
+plumbers <- c(44, 39, 50, 37, 45, 39, 52, 45, 39, 48, 44, 43, 53)
+n_a <- length(accountants)
+n_g <- length(gps)
+n_l <- length(lecturers)
+n_p <- length(plumbers)
+hours_worked <- c(accountants, gps, lecturers, plumbers)
+group <- factor(c(rep("Accountants", n_a), 
+                  rep("GPS", n_g), 
+                  rep("Lecturers", n_l), 
+                  rep("Plumbers", n_p)))
+hw_g <- data.frame(hours_worked, group)
+```
+
+Here are some selected rows:
+
+```{r}
+hw_g[c(1, 4, 17, 22, 33, 39, 42, 48), ]
+```
+
+## Comparing the Underlying Means of More Than Two Groups: Plotting the Data
+
+```{r, echo = FALSE}
+ggplot(hw_g, aes(x = group, y = hours_worked, fill = group)) + 
+    geom_boxplot(varwidth = TRUE) +
+    labs(x = "Group", y = "Hours worked each week") +
+  theme(axis.title = element_text(size = 20, color = "black"), # Customize the titles of both axes 
+        axis.text = element_text(size = 18, color = "black"), # Customize the text of both axes
+        legend.title = element_text(size = 20, color = "black"),
+        legend.text = element_text(size = 18, color = "black")) # Customize the facet text
+```
+
+
+## One-way Analysis of Variance
+
+- The plot displays the weekly hours worked by accountants, GPs, lecturers and 
+plumbers.
+
+- The question of interest is:
+Is the underlying mean number of hours different between these \textbf{four} groups?
+
+- To answer this question we perform a \textbf{one-way analysis of variance}. 
+
+- \textbf{An}alysis \textbf{o}f \textbf{Va}riance is often abbreviated \textbf{ANOVA}.
+
+## One-way Analysis of Variance using the \texttt{lm} Function
+ 
+```{r}
+m <- lm(hours_worked ~ group, data = hw_g) 
+  # ANOVA is a linear model
+anova(m)
+```
+
+
+## $p$-value 
+
+Here, the $p$-value is
+
+```{r, echo = FALSE}
+anova(m)$"Pr(>F)"[1]
+```
+If the $p$-value is less that $0.05$, which it is here, we conclude that
+
+- \textbf{there is a  difference between the 
+underlying mean number of hours worked in these four groups}.
+
+
+## One-way Analysis of Variance using the \texttt{aov} Function
+
+A __One-way Analysis of Variance__ can also be performed using the \texttt{aov} function
+
+```{r}
+m_2 <- aov(hours_worked ~ group, data = hw_g)
+summary(m_2)
+```
+
+
+## Follow-up Analysis
+
+If we find that there is an  difference between the underlying means of the
+groups, we should proceed by performing a __follow-up analysis__ to see where the group differences are:
+
+\footnotesize
+```{r}
+TukeyHSD(m_2) # Follow-up: pair-wise comparisons
+```
+
+
+## Follow-up Analysis, continued
+
+```{r, echo=FALSE}
+options(scipen = 999)
+```
+
+```{r}
+TukeyHSD(m_2)$group[,4]
+```
+
+- We should look at the $p$-values in the \texttt{p adj} column.
+
+- When the $p$-value is
+less that $0.05$, we should conclude that there is an underlying difference.  
+
+- So here there are differences between GPs and accountants, between lecturers and GPs and between plumbers and GPs.  GPs work a lot!!!
+
+
