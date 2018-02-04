@@ -16,7 +16,7 @@ options(width = 60)
 
 # Comparing the Underlying Means of Two Groups
 
-## Comparing the Underlying Means of Two Groups
+## Comparing the Underlying Means of Two Groups Hello!
 
 ```{r, echo = FALSE}
 setwd("/Users/julianstander/Dropbox/MATH500/Practicals/Practical_9_t_test_ANOVA")
