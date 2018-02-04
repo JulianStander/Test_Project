@@ -1,0 +1,12 @@
+\usepackage{MnSymbol,wasysym,marvosym,pagecolor,etoolbox}
+%
+\makeatletter
+\patchcmd{\@maketitle}% <cmd>
+  {\@title}% <search>
+  {\color{\@titlecolor}\@title}% <replace>
+    {}{}% <success><failure>
+\newcommand{\@titlecolor}{red}
+\newcommand{\titlecolor}[1]{\renewcommand{\@titlecolor}{#1}}
+\makeatother
+
+\definecolor{shadecolor}{RGB}{255,192,203}
